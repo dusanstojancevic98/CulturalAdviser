@@ -1,0 +1,141 @@
+<div class="content" role="main">
+  <div class="d-flex">
+    <div class="mt-3 mb-3 ml-3">
+      <div class="pl-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Select category</mat-label>
+          <mat-select id="select_category_through_culturalOffersPage" (selectionChange)="changeSelect($event.value)">
+            <mat-option [value]="0">All</mat-option>
+            <mat-option
+              [id]="'select_category_through_culturalOffersPage_'+category.id"
+              *ngFor="let category of categories"
+              [value]="category.id"        
+              >{{ category.name }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="mr-auto mt-3 mb-3">
+      <app-search (searchChanged)="searchChanged($event)"></app-search>
+    </div>
+    <div class="mt-3 mb-3 mr-3">
+      <button
+        id="create_new_cultural_offer_button"
+        *ngIf="role === 'ROLE_ADMIN'"
+        mat-flat-button
+        color="primary"
+        class="button-add"
+        routerLink="/cultural-offers/create"
+      >
+        <mat-icon>account_balance</mat-icon> Create new cultural offer
+      </button>
+    </div>
+  </div>
+  <mdb-card
+    *ngFor="
+      let row of rows
+        | paginate
+          : {
+              itemsPerPage: size,
+              currentPage: page,
+              totalItems: culturalOffers.totalElements
+            }
+    "
+  >
+    <mdb-card-body>
+      <div class="card-deck">
+        <mdb-card id="culturalOffer.id" class="containerCard" *ngFor="let culturalOffer of row">
+          <div class="view overlay waves-light" mdbWavesEffect>
+            <mdb-card-img
+              src="{{ culturalOffer.image }}"
+              alt="Card image cap"
+            ></mdb-card-img>
+            <a>
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+
+          <mdb-card-body class="d-flex flex-column">
+            <mdb-card-title class="align-self-center">
+              <h4>{{ culturalOffer.name }}</h4>
+              <button
+                [id]="'culturalOffer_'+culturalOffer.id+'_remove_button'"
+                *ngIf="role === 'ROLE_ADMIN'"
+                mdbBtn
+                type="button"
+                size="sm"
+                color="red"
+                mdbWavesEffect
+                (click)="openDialog(culturalOffer.id)"
+              >
+                Remove
+              </button>
+              <button
+                [id]="'culturalOffer_'+culturalOffer.id+'_update_button'"
+                *ngIf="role === 'ROLE_ADMIN'"
+                mdbBtn
+                type="button"
+                size="sm"
+                color="default"
+                mdbWavesEffect
+                [routerLink]="['update/', culturalOffer.id.toString()]"
+              >
+                Update
+              </button>
+            </mdb-card-title>
+
+            <mdb-card-text *ngIf="culturalOffer.description">
+              {{ culturalOffer.description | slice: 0:360
+              }}{{ culturalOffer.description.length > 360 ? "..." : "" }}
+            </mdb-card-text>
+            <mdb-card-text *ngIf="!culturalOffer.description"> </mdb-card-text>
+
+            <div class="mt-auto align-self-center">
+              <button
+                [id]="'culturalOfferPage_more_button_'+culturalOffer.id"
+                type="button"
+                size="sm"
+                mdbBtn
+                color="info"
+                mdbWavesEffect
+                [routerLink]="['/cultural-offers/', culturalOffer.id]"
+              >
+                More
+              </button>
+              <button
+                  *ngIf="!(subscribed.get(culturalOffer.id))  && role === 'ROLE_REGISTERED_USER'"
+                  class="green white-text"
+                  size="sm"
+                  type="button"
+                  size="sm"
+                  mdbBtn
+                  mdbWavesEffect
+                  (click)="subscribe(culturalOffer.id)"
+                >
+                  Subscribe
+                </button>
+                <button
+                  *ngIf="subscribed.get(culturalOffer.id) && role === 'ROLE_REGISTERED_USER'"
+                  type="button"
+                  size="sm"
+                  mdbBtn
+                  class="red white-text"
+                  size="sm"
+                  mdbWavesEffect
+                  (click)="unsubscribe(culturalOffer.id)"
+                >
+                  Unsubscribe
+                </button>
+            </div>
+          </mdb-card-body>
+        </mdb-card>
+      </div>
+    </mdb-card-body>
+  </mdb-card>
+  <pagination-controls
+    previousLabel="Previous"
+    nextLabel="Next"
+    (pageChange)="handlePageChange($event)"
+  ></pagination-controls>
+</div>

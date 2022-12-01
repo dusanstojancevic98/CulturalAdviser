@@ -1,0 +1,111 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-7 mt-3 mb-3">
+      <mdb-card>
+        <mdb-card-body>
+          <div class="row">
+            <div class="col-4">
+              <div class="view overlay">
+                <app-image-modal
+                  style="float: left"
+                  [imageURL]="culturalOffer.image"
+                ></app-image-modal>
+              </div>
+            </div>
+            <div class="col-5 mt-3">
+              <div>
+                <h1 id="individual_culturalOffer_name">
+                  <b>{{ culturalOffer.name }}</b>
+                </h1>
+              </div>
+              <div>
+                <h2>
+                  <mdb-badge color="amber darken-2"
+                    >#{{ culturalOffer.category.name }}</mdb-badge
+                  >
+                </h2>
+              </div>
+            </div>
+            <div class="col-3">
+              <div>
+                <span>
+                  Average: <b>{{ culturalOffer.averageMark?.toFixed(1) }}/5</b>
+                  <bar-rating
+                    *ngIf="role === 'ROLE_REGISTERED_USER'" 
+                    [(rate)]="mark"
+                    [theme]="'stars'"
+                    [max]="5"
+                    (rateChange)="onRate($event)"
+                  ></bar-rating>
+                </span>
+              </div>
+              <div *ngIf="role === 'ROLE_REGISTERED_USER'">
+                <button
+                  *ngIf="!subscribed"
+                  mat-stroked-button
+                  class="green"
+                  size="sm"
+                  mdbWavesEffect
+                  (click)="subscribe()"
+                >
+                  Subscribe
+                </button>
+                <button
+                  *ngIf="subscribed"
+                  mat-stroked-button
+                  class="red"
+                  size="sm"
+                  mdbWavesEffect
+                  (click)="unsubscribe()"
+                >
+                  Unsubscribe
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3 mx-1" style="text-align: justify">
+            {{ culturalOffer.description }}
+          </div>
+        </mdb-card-body>
+        <div class="mb-3">
+          <a
+            mat-flat-button
+            class="mat-but ml-5 mt-3"
+            color="primary"
+            [routerLink]="['comments']"
+            id="comments-review-btn"
+          >
+            <mat-icon class="mr-2">comment</mat-icon> Comments
+          </a>
+          <button
+            *ngIf="role === 'ROLE_REGISTERED_USER'"
+            mat-flat-button
+            class="mat-but ml-2"
+            (click)="openDialog()"
+            id="add-new-comment-btn"
+          >
+            <mat-icon class="ml-3">add_comment</mat-icon> Add new comment
+          </button>
+          <a mat-flat-button class="mat-but ml-5 mt-3" routerLink="/news/cultural-offer/{{culturalOfferId}}" id="news-review-btn"> 
+            <mat-icon class="mr-2">history_edu</mat-icon> News
+          </a>
+        </div>
+        <router-outlet></router-outlet>
+      </mdb-card>
+    </div>
+    <div class="col-5 mt-3">
+      <mdb-card class="map-container">
+        <mdb-card-body>
+          <app-map
+            [latitude]="culturalOffer.geolocation.lat"
+            [longitude]="culturalOffer.geolocation.lon"
+            [zoom]="zoom"
+            [showInfoWindow]="true"
+            [data]="[culturalOffer]"
+          >
+          </app-map>
+        </mdb-card-body>
+      </mdb-card>
+    </div>
+  </div>
+</div>

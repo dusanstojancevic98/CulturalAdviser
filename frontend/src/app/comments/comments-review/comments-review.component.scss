@@ -1,0 +1,5 @@
+@use '../../../base';
+
+.div-centered {
+    @extend %flex-center;
+}

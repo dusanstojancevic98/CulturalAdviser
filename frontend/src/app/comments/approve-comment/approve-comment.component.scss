@@ -1,0 +1,19 @@
+@use '../../../base';
+
+.div-centered {
+    @extend %flex-center
+}
+
+.comment {
+    width: 70%;
+}
+
+.cultural-offer-name {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.green {
+    background-color: base.$success;
+    color: white;
+}

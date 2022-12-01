@@ -1,0 +1,120 @@
+<mdb-navbar
+  SideClass="navbar navbar-expand-lg navbar-dark"
+  class="navCss"
+  [containerInside]="false"
+>
+  <mdb-navbar-brand
+    ><a class="navbar-brand" routerLink="" routerLinkActive="active"
+      ><img height="40" width="40" src="../../../../assets/Logo.png"></a
+    ></mdb-navbar-brand
+  >
+  <links>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a
+          class="nav-link waves-light font-weight-bolder ml-2 mt-2 h6"
+          routerLink=""
+          routerLinkActive="active"
+          mdbWavesEffect
+          >Home</a
+        >
+      </li>
+      <li class="nav-item">
+        <a *ngIf="role === 'ROLE_REGISTERED_USER'" class="nav-link waves-light font-weight-bolder ml-2 mt-2 h6" 
+        routerLink="/news/my-news" mdbWavesEffect>My News</a>
+      </li>
+      <li class="nav-item">
+        <a *ngIf="role === 'ROLE_REGISTERED_USER'" class="nav-link waves-light font-weight-bolder ml-2 mt-2 h6" 
+        routerLink="/news/my-offers" mdbWavesEffect>Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a
+          id="culturalOffers_navigation"
+          class="nav-link waves-light font-weight-bolder ml-2 mt-2 h6"
+          routerLink="/cultural-offers"
+          routerLinkActive="active"
+          mdbWavesEffect
+          >Cultural offers</a
+        >
+      </li>
+      <li class="nav-item" dropdown>
+        <a
+          id="category-navigation"
+          *ngIf="role === 'ROLE_ADMIN'"
+          dropdownToggle
+          mdbWavesEffect
+          type="button"
+          class="nav-link waves-light font-weight-bolder ml-2 mt-2 h6"
+          routerLink="/categories"
+          routerLinkActive="active"
+          mdbWavesEffect
+        >
+          Categories</a>
+      </li>
+      <li class="nav-item">
+        <a
+          id="user-navigation"
+          *ngIf="role === 'ROLE_ADMIN'"
+          class="nav-link waves-light font-weight-bolder ml-2 mt-2 h6"
+          routerLink="/users"
+          routerLinkActive="active"
+          mdbWavesEffect
+          >Users</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          id="comment-requests-navigation"
+          *ngIf="role === 'ROLE_ADMIN'"
+          class="nav-link waves-light font-weight-bolder ml-2 mt-2 h6"
+          routerLink="/approving-comments"
+          routerLinkActive="active"
+          mdbWavesEffect
+          >Comment requests</a
+        >
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto nav-flex-icons">
+      <li class="nav-item">
+        <a
+          id="signin-navigation"
+          *ngIf="!role"
+          class="nav-link waves-light font-weight-bolder ml-2 mt-2 h6"
+          routerLink="/auth/sign-in"
+          mdbWavesEffect
+          >Sign in</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          id="signup-navigation"
+          *ngIf="!role"
+          class="nav-link waves-light font-weight-bolder ml-2 mt-2 h6"
+          routerLink="/auth/sign-up"
+          mdbWavesEffect
+          >Sign up</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          id="profile-button"
+          *ngIf="role"
+          class="nav-link waves-light font-weight-bolder ml-2 mt-2 h6"
+          (click)="showProfile()"
+          mdbWavesEffect
+          >{{ user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1) }} {{ user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1) }}</a
+        >
+      </li>
+      <li class="nav-item">
+        <button *ngIf="role" mat-icon-button [matMenuTriggerFor]="menu" id="profile-circle-button">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button (click)="showProfile()" mat-menu-item><mat-icon>person_outline</mat-icon> Your account</button>
+          <button (click)="changePassword()" mat-menu-item id="change-password-button"><mat-icon>security</mat-icon> Change password</button>
+          <button (click)="logout()" mat-menu-item><mat-icon>exit_to_app</mat-icon> Log out</button>
+        </mat-menu>
+      </li>
+    </ul>
+  </links>
+</mdb-navbar>
